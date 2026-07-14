@@ -1,0 +1,23 @@
+# Clojure
+.cpcache/
+.nrepl-port
+.prepl-port
+target/
+*.jar
+*.class
+.clj-kondo/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# OS
+Thumbs.db
+
+# Environment
+.env
+.env.local

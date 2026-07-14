@@ -1,0 +1,10 @@
+{:itonami.blueprint/id "cloud-itonami-isic-8412"
+ :itonami.blueprint/name "Health Care and Social Services Regulatory Administration"
+ :itonami.blueprint/isic-rev5 "8412"
+ :itonami.blueprint/domain :social-health/regulatory-compliance
+ :itonami.blueprint/license "AGPL-3.0-or-later"
+ :itonami.blueprint/social-impact [:public-health-access :educational-quality :social-service-accountability :provider-compliance-transparency]
+ :itonami.blueprint/governor :social-health-regulatory-governor
+ :itonami.blueprint/robotics true
+ :itonami.blueprint/required-technologies [:robotics :identity :forms :dmn :bpmn :audit-ledger]
+ :itonami.blueprint/status :public-oss}
