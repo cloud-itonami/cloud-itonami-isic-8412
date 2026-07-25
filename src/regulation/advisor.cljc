@@ -25,7 +25,8 @@
 
   LLM parse failures always yield `:confidence 0.0` (never fabricate
   confidence), which forces the governor to escalate/hold."
-  (:require [clojure.string :as str]))
+  (:require [clojure.edn :as edn]
+            [clojure.string :as str]))
 
 ; Closed allowlist: only these operations are permitted
 (def permitted-ops #{:register-provider
@@ -75,7 +76,7 @@
 
 (defn- parse-proposal [content]
   (try
-    (let [p (read-string content)
+    (let [p (edn/read-string content)
           op-valid? (and (map? p) (contains? permitted-ops (:op p)))]
       (if op-valid?
         (assoc p :effect :propose)
