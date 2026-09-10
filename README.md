@@ -79,15 +79,15 @@ human-in-the-loop interrupt/resume via checkpointing.
                                            +-> :hold               (:hard? true)
 ```
 
-- `src/regulation/store.cljc` — `Store` protocol + `MemStore`:
+- `src/regulation/store.kotoba` — `Store` protocol + `MemStore`:
   registered providers, committed regulatory records, an append-only audit ledger.
-- `src/regulation/advisor.cljc` — `Advisor` protocol; `mock-advisor`
+- `src/regulation/advisor.kotoba` — `Advisor` protocol; `mock-advisor`
   (deterministic, default) proposes a regulatory operation from a
   request; `llm-advisor` wraps a `langchain.model/ChatModel` — either
   way the advisor only ever produces a `:propose`-effect proposal,
   never a committed record, and LLM parse failures always yield
   `confidence 0.0` (forces escalation, never fabricated confidence).
-- `src/regulation/governor.cljc` — `RegulatoryGovernor/check`: a pure
+- `src/regulation/governor.kotoba` — `RegulatoryGovernor/check`: a pure
   function, wired as its own `:govern` node. Hard invariants
   (unregistered provider, a proposal whose `:effect` isn't `:propose`, any
   proposal touching license decisions or binding regulatory determinations)
@@ -96,7 +96,7 @@ human-in-the-loop interrupt/resume via checkpointing.
   to `:request-approval` — an `interrupt-before` node that the graph
   checkpoints and only resumes on explicit human approval
   (`actor/approve!`).
-- `src/regulation/actor.cljc` — `build-graph`, `run-request!`,
+- `src/regulation/actor.kotoba` — `build-graph`, `run-request!`,
   `approve!`: the `langgraph.graph/state-graph` wiring itself.
 
 ```bash
