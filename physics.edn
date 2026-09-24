@@ -1,0 +1,37 @@
+;; What this vertical's robot physically does, declared for
+;; kotoba.robotics.process (kotoba-lang/robotics). `kbb -M:physics` runs it.
+;;
+;; README "Robotics premise": a document-handling and verification robot
+;; performs provider registration, inspection coordination and compliance
+;; documentation for a regulator of health care, education, cultural and
+;; social-service providers (ISIC 8412). The physical work declared here is
+;; the inspection itself: the robot carries its inspection kit through a
+;; licensed provider's premises, and on a school / care-home kitchen
+;; inspection it verifies whether cooked food in a pan cools fast enough in
+;; the provider's blast chiller.
+;;
+;; Every number without a cited source is marked `estimate` in its :basis.
+;; Replacing an estimate with a sourced value is this bot's growth work.
+{:physics/schema "itonami.physical-ai.spec.v1"
+ :repo "cloud-itonami/cloud-itonami-isic-8412"
+ :cases
+ [{:id :cooked-food-pan-cooling
+   :kind :thermal
+   :procedure "inspection robot probes a pan of cooked food in the provider's blast chiller; its deepest point must fall from 57 C (135 F) to 21 C (70 F)"
+   :params {:conductivity-w-mk 0.5 :density-kg-m3 1050.0 :specific-heat-j-kgk 3600.0
+            :t0-c 57.0 :t-hot-c 2.0 :h-front-w-m2k 40.0 :h-back-w-m2k 0.0 :t-back-ambient-c 2.0
+            :threshold-c 21.0 :threshold-direction :falling :duration-s 21600.0 :nodes 9}
+   :sweep {:param :thickness-m :values [0.01 0.02 0.03 0.04 0.05]}
+   :quantity :time-to-threshold-s
+   :limit {:max 7200.0 :basis "US FDA Food Code 3-501.14(A)(1): cooked TCS food cooled from 57 C (135 F) to 21 C (70 F) within 2 hours; pan modeled as food depth with the pan bottom adiabatic (conservative), conduction only, blast-chiller h is an estimate"}
+   :boundary {:lo 0.005 :hi 0.06}}
+  {:id :inspection-kit-through-premises
+   :kind :transport
+   :procedure "inspection robot carries its kit (probe thermometers, document scanner, sample bags) through the licensed provider's premises between inspection points"
+   :params {:mass-kg 35.0 :payload-kg 7.0 :v-max-mps 1.0 :a-max-mps2 0.5
+            :brake-decel-mps2 0.8 :drive-force-n 70.0 :crr 0.02
+            :cog-height-m 0.50 :support-half-length-m 0.25 :max-time-s 1800.0}
+   :sweep {:param :distance-m :values [20.0 50.0 90.0 140.0 200.0]}
+   :quantity :cycle-time-s
+   :limit {:max 90.0 :basis "estimate: inspection plan allots about 90 s of travel between consecutive inspection points so a site visit fits in half a day"}
+   :boundary {:lo 5.0 :hi 400.0}}]}
